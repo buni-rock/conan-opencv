@@ -49,6 +49,11 @@ class OpenCVConan(ConanFile):
 
         shutil.rmtree(os.path.join(self._source_subfolder, '3rdparty'))
 
+        tools.replace_in_file("source_subfolder/cmake/OpenCVDetectCXXCompiler.cmake", "set(OpenCV_RUNTIME vc15)",
+                              '''set(OpenCV_RUNTIME vc15)
+elseif(MSVC_VERSION MATCHES "^192[0-9]$")
+    set(OpenCV_RUNTIME vc16)''')  
+
     def config_options(self):
         if self.settings.os == 'Windows':
             del self.options.fPIC
